@@ -19,9 +19,23 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+function timeConverter(UNIX_timestamp, format){
+  var a = new Date(UNIX_timestamp * 1000);
+  if (format == 1) {
+    return a.toUTCString();
+  } else {
+    return a.getTime();
+  }
+}
+
+app.get("/api/timestamp/:inputNumber", function (req, res) {
+  const { inputNumber } = req.params;
+  regexp = /\-+/;
+  if (regexp.test(inputNumber.toString())) {
+    res.json({"unix": timeConverter(inputNumber/1000, 0), "utc": timeConverter(inputNumber/1000, 1)});
+} else {
+  res.json({"unix": inputNumber, "utc": timeConverter(inputNumber/1000, 1)});
+}
 });
 
 
@@ -30,3 +44,6 @@ app.get("/api/hello", function (req, res) {
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
+
+ 
