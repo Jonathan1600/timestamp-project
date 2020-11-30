@@ -28,15 +28,17 @@ function timeConverter(UNIX_timestamp, format){
   }
 }
 
+
 app.get("/api/timestamp/:inputNumber", function (req, res) {
   const { inputNumber } = req.params;
-  regexp = /\-+/;
-  if (regexp.test(inputNumber.toString())) {
-    res.json({"unix": timeConverter(inputNumber/1000, 0), "utc": timeConverter(inputNumber/1000, 1)});
-} else {
-  res.json({"unix": inputNumber, "utc": timeConverter(inputNumber/1000, 1)});
-}
+  if (inputNumber.length == 13) {
+    var a = new Date(inputNumber * 1);
+  res.json({"unix": a.getTime(), "utc": a.toUTCString()});
+  }
+  var a = new Date(inputNumber.toString());
+  res.json({"unix": a.getTime(), "utc": a.toUTCString()});
 });
+
 
 
 
