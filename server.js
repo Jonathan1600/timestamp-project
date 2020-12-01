@@ -52,6 +52,11 @@ app.get("/api/timestamp/:inputNumber", function (req, res) {
   }
 });
 
+app.get("/api/timestamp", (req, res) => {
+  var today = new Date();
+  res.json({ "unix": today.getTime(), "utc": today.toUTCString() })
+}) 
+
 
 
 
