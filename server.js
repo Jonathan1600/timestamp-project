@@ -28,15 +28,28 @@ function timeConverter(UNIX_timestamp, format){
   }
 }
 
+function timeConverter(unix, type) {
+  var a = 0;
+  if (type === 1) {
+    a = new Date(unix * 1);
+  } else {
+    a = new Date(unix.toString());
+  }
+
+  if (a.toUTCString() == "Invalid Date") {
+    return { error: "Invalid Date" }
+  } else {
+    return { "unix": a.getTime(), "utc": a.toUTCString() }
+  }
+}
 
 app.get("/api/timestamp/:inputNumber", function (req, res) {
   const { inputNumber } = req.params;
   if (inputNumber.length == 13) {
-    var a = new Date(inputNumber * 1);
-  res.json({"unix": a.getTime(), "utc": a.toUTCString()});
+    res.json(timeConverter(inputNumber, 1));
+  } else {
+    res.json(timeConverter(inputNumber, 0));
   }
-  var a = new Date(inputNumber.toString());
-  res.json({"unix": a.getTime(), "utc": a.toUTCString()});
 });
 
 
